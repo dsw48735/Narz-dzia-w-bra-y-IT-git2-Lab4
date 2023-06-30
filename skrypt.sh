@@ -22,6 +22,3 @@ elif [ "$1" == "--help" ]; then
 else
   echo "Nieznana opcja. Użyj '--help' aby zobaczyć dostępne opcje."
 fi
-=======
-=======
-  echo $(date)
