@@ -1,24 +1,62 @@
 #!/bin/bash
 
-if [ "$1" == "--date" ]; then
-  echo $(date)
-elif [ "$1" == "--logs" ]; then
-  if [ -z "$2" ]; then
-    num_logs=100
-  else
-    num_logs=$2
-  fi
+init_flag=false
+error_flag=false
+error_count=100
 
-  for ((i=1; i<=num_logs; i++)); do
-    filename="log${i}.txt"
-    echo -e "Nazwa pliku: $filename\nNazwa skryptu: $0\nData: $(date)" > $filename
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --help|-h)
+      echo "Skrypt.sh - Skrypt pomocniczy"
+      echo "Użycie: skrypt.sh [opcje]"
+      echo ""
+      echo "Opcje:"
+      echo "-h, --help              Wyświetla pomoc"
+      echo "-l, --logs              Wyświetla logi"
+      echo "-d, --date              Wyświetla aktualną datę"
+      echo "-e, --error [liczba]    Tworzy plik błędu"
+      echo "--init                  Klonuje repozytorium i ustawia zmienną środowiskową PATH"
+      exit 0
+      ;;
+    --logs|-l)
+      echo "Wyświetlanie logów..."
+      # Kod obsługujący wyświetlanie logów
+      shift
+      ;;
+    --date|-d)
+      echo "Aktualna data: $(date)"
+      shift
+      ;;
+    --error|-e)
+      if [[ $2 =~ ^[0-9]+$ ]]; then
+        error_flag=true
+        error_count=$2
+        shift 2
+      else
+        echo "Błędna liczba dla opcji --error. Używam domyślnej wartości."
+        shift
+      fi
+      ;;
+    --init)
+      init_flag=true
+      shift
+      ;;
+    *)
+      echo "Nieznana opcja: $1"
+      exit 1
+      ;;
+  esac
+done
+
+if $init_flag; then
+  echo "Inicjalizacja..."
+  # Kod obsługujący inicjalizację
+fi
+
+if $error_flag; then
+  echo "Tworzenie plików błędu..."
+  # Kod obsługujący tworzenie plików błędu
+  for ((i=1; i<=error_count; i++)); do
+    echo "Błąd $i" > "errorx/error$i.txt"
   done
-elif [ "$1" == "--help" ]; then
-  echo "Dostępne opcje:"
-  echo "- --date: Wyświetla dzisiejszą datę"
-  echo "- --logs: Tworzy automatycznie 100 plików logx.txt z informacjami"
-  echo "- --logs <liczba>: Tworzy automatycznie <liczba> plików logx.txt z informacjami"
-  echo "- --help: Wyświetla wszystkie dostępne opcje"
-else
-  echo "Nieznana opcja. Użyj '--help' aby zobaczyć dostępne opcje."
 fi
