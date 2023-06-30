@@ -13,3 +13,5 @@ elif [ "$1" == "--logs" ]; then
     filename="log${i}.txt"
     echo -e "Nazwa pliku: $filename\nNazwa skryptu: $0\nData: $(date)" > $filename
   done
+=======
+  echo $(date)
